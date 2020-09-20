@@ -1,0 +1,12 @@
+<% if @user.errors.any? %>     <!-- any?はempty?の逆で要素が１つでもある場合はtrue,ない場合はfalseを返す-->
+    <div id="error_explanation">    <!-- エラーメッセージにスタイルを与えるためのCSS id error_explanationを追加-->
+        <div class="alert alert-danger">
+            The form contains <%= pluralize(@user.errors.count, "error") %>     <!--countメソッドでエラー数を返す, pluralizeは最初の引数に整数が与えられると、それに基づいて２番目の引数の英単語を複数形に変換したものを返す-->
+        </div>
+        <ul>
+            <% @user.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+            <% end %>
+        </ul>
+    </div>
+<% end %>
