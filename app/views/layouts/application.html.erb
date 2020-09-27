@@ -13,7 +13,8 @@
     
     <div class="container">
       <% flash.each do |message_type, message| %>
-        <div class="alert alert-<%= message_type %>"><%= message %></div>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>   <!-- alert-<%= message_type %>で適用するCSSクラスをメッセージの種類により変更している-->
+        <!-- Bootstrapにはflash用のクラスとしてsuccess,info,warning,dangerがある-->
       <% end %>
       <%= yield %>
       <%= render "layouts/footer" %>
