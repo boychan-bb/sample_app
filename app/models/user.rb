@@ -7,7 +7,7 @@ class User < ApplicationRecord
                 format: {with: VALID_EMAIL_REGEX},
                 uniqueness: { case_sensitive: false }     #case_sensitiveで大文字小文字を区別可能になる。
     has_secure_password
-    validates :password, presence: true, length: { minimum: 6 }
+    validates :password, presence: true, length: { minimum: 6}, allow_nil: true
     
     def User.digest(string)     #渡された文字列のハッシュを返す
         cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

@@ -10,6 +10,10 @@ module SessionsHelper
         cookies.permanent[:remember_token] = user.remember_token
     end
     
+    def current_user?(user)
+        user == current_user
+    end
+    
     def current_user        #現在ログイン中のuserを返す(いる場合)
         if (user_id = session[:user_id])        #user_idと言う変数に、sessionの中のuser_idを代入した結果、userIDのセッションが存在すれば
             @current_user ||= User.find_by(id: user_id)     #||=(or equal)は左から右に評価して、最初にtrueになった時点で処理を終了する。find_byで見つけられなかったら単純にnilを返すだけ
@@ -36,5 +40,16 @@ module SessionsHelper
         forget(current_user)    #上記に定義しているforgetメソッドを引数current_userで呼び出し、ただし、current_userメソッドを実行した戻り値を用いている
         session.delete(:user_id)        #sessionのidを削除
         @current_user = nil              #@current_userをnilにする
+    end
+    
+    def redirect_back_or(default)
+        redirect_to(session[:forwarding_url] || dafault)
+        session.delete(:forwarding_url)     #転送先のURLを削除、これをしないと、次回ログインした際に保護されたページに転送されてしまい、ブラウザを閉じるまでこれが繰り返される
+    end
+    
+    def store_location
+        session[:forwarding_url] = request.original_url if request.get?       #転送先のURLを保存する仕組みはsession変数を用いる。request.origin_urlでリクエスト先を取得可能
+        #リクエストが送られたURLをsession変数の:forwading_urlキーに格納。正し、GETリクエストの時のみ格納する。これにより、例えばログインしてないuserがフォーム
+        #を使用して送信した際に転送先のURLを保存させないようにする
     end
 end

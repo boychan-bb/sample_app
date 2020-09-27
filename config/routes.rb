@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get "/contact", to: "static_pages#contact"
   get "/signup", to: "users#new"
   get "/login", to: "sessions#new"    #名前付きルートlogin_path
-  post "/login", to: "session#create"   #名前付きルートlogin_path
+  post "/login", to: "sessions#create"   #名前付きルートlogin_path
   delete "/logout", to: "sessions#destroy"    #名前付きルートlogout_path
   resources :users
 end
